@@ -1,0 +1,359 @@
+# Anubhav Parbhakar
+
+documentation for "main.py":
+...
+Function name: state_to_board
+Description: takes in a state, and turns it into a 3 by 3 board
+Input: list
+Output: lis no direct side effect, indirectly effects every single function
+...
+
+...
+Function name: board_to_state
+Description: takes in a board, and extends it into a state, with the 1st element
+being who's turn it is in that state
+Input: list
+Output: list
+...
+
+...
+Function name: to_move
+Description: given a state, returns whose move it is
+Input: list
+Output: str
+...
+
+...
+Function name: is_terminal
+Description: given a state, determines if the board equivalent is a terminal state
+Input: state
+Output: bool
+...
+
+...
+Function name: utility
+Description: given a terminal state, determines the utility of that state,
+which depends on which player won, or if it was a draw
+Input: list 
+Output: int
+...
+
+...
+Function name: actions
+Description: given a state, determines what action(s) each pawn in its board 
+representation can make
+Input: list
+Output: dict
+...
+
+...
+Function name: result
+Description: given a state (which turns into a board), moves the pawn specified by
+position, to another location, as a result of action, returning the resulting
+state
+Input: state, position, action
+Output: state
+...
+
+...
+Function name: minimax
+Description: returns the optimal move for a given state
+Input: list
+Output: list
+...
+
+...
+Function name: max_value
+Description: calls min_value and checks its "value" was greater than the previously
+assigned, return the optimal move
+Input: list
+Output: list 
+...
+
+...
+Function name: min_value
+Description: calls max_value and checks its "value" was less  than the previously
+assigned one, return the optimal move 
+Input: list
+Output: list
+...
+
+...
+Function name: policy_table_wrapper
+Description: wrapper function for policy_table, makes a policy table and passes
+it in as an arg of policy_table
+Input: list
+Output: list
+...
+
+...
+Function name: create_move
+Description: helper function for policy_table, returns a board (which is turned
+into a state) that shows which pawn should be moved by marking it as 1, while the
+of the elements are marked as zero
+Input: list, str
+Output: list 
+...
+
+...
+Function name: policy_table
+Description: recursive function that continously calls minimax and populates
+the policy table using the create_move function
+Input: list, list
+Output: list
+...
+
+
+...
+Function name: classify_wrapper
+Description: wrapper function for classify, creates and inits a counter var as zero,
+and passes it into classify, along with the network, and the transposed input
+Input: Network, list 
+Output: list 
+...
+
+...
+Function name: transpose
+Description: helper function that turns a state into a suitable format for
+matrix multiplcation
+Input: list
+Output: list 
+...
+
+...
+Function name: classify 
+Description: recursive function that systematically multiplies the input by the
+weight of the current layer, then adds that product to the bias, and then "activates"
+it using either relu or sigmoid, with the counter being incremented when the
+same inputs as passed in for recursion's sake, returns the final output of the
+network when the base case is hit
+Input: Network, list, int 
+Output: list
+...
+
+...
+Function name: update_weights_wrapper
+Description: wrapper function for the update_weights function that passes along 
+a transposed version of the expected output
+Input: Network, list
+Output: None
+...
+
+
+...
+Function name: update_weights 
+Description: essentially the back propagation function that splits the process into
+two parts, formulate_errors, and adjust_attributes, and passes in a counter var
+that is inited as the last index of the # of nodes, e.g., if 9 nodes, counter = 8
+Input: Network, list
+Output: None
+...
+
+...
+Function name: formulate_errors
+Description: recursively goes backwards from the outer layer to the first hidden
+layer, whilst calculating each layers' errors and error deltas, all of which is
+directly updated
+Input: Network, list, int
+Output: None
+...
+
+...
+Function name: adjust_attributes
+Description: once again recursively goes backwards from the outer layer to the
+first hidden layer, but this time adjusting the weights (after first calculating
+the adjustment amount) and the bias, for each layer, with every being directly
+updated
+Input: Network, list, int
+Output: None 
+...
+
+documentation for "network.py":
+...
+Function name: __init__
+Description: constructor for Network class, creates a layers attibute
+Input: none
+Output: none
+...
+
+...
+Function name: add_layers 
+Description: creates a Layer instance when called, as well creating the object's 
+o.g. weights and bias, then add the object to its list of Layer objects
+Input: bool, bool
+Output: None
+...
+
+...
+Function name: print_layers 
+Description: returns the layers attribute
+Input: none
+Output: list
+...
+
+...
+Function name: set_error_outer_layer
+Description: given a Layer object and the expected output, its calculates the 
+error for that object, and that then updates it using the set_error property
+of the Layer class
+Input: Layer, list 
+Output: none
+...
+
+...
+Function name: set_error_hidden_layer
+Description: given a Layer object and the expected output, its calculates the 
+error for that object, and that then updates it using the set_error property
+Input: Layer, list
+Output: none
+...
+
+...
+Function name: set_error_delta 
+Description: given a layer object, it access its error attribute and multiplies
+it by the output from inputting the object's output (for the network) into
+either the relu_derivate or sigmoid_derivative function,
+and then updates it using the set_error_delta property of the Layer class 
+Input: Layer
+Output: None
+...
+documentation for "layer.py":
+...
+Function name: __init_
+Description: constructor for the Layer class, takes in truth values for whether the
+current layer being made is the first hidden layer, i.e., the one receiving the
+input from the input layer, or the last hidden layer, i.e., the output layer
+Input: bool, bool
+Output: None 
+...
+
+...
+Function name: is_first_layer
+Description: returns the is_first_layer attribute of the current object
+Input: None 
+Output: bool
+...
+
+...
+Function name: is_output_layer 
+Description: returns the is_output_layer attribute of the current object
+Input: None  
+Output: bool 
+...
+
+...
+Function name: create_layer 
+Description: uses matrix math to create either create a 9 by 10 matrix, or a 
+9 by 9 matrix,
+with each element being randomly generated (each row is the # of nodes in current
+layer, each column is the number of nodes in the previous/input layer), directly
+updates the weight 
+Input: None 
+Output: None
+...
+
+...
+Function name: create_bias 
+Description: similar to create_layer, uses matrix math to create a 9 by 1 matrix,
+with its element being randomly generated, with the object's bias attribute being
+directly updated
+Input: None 
+Output: None
+...
+
+...
+Function name: get_bias
+Description: returns the bias attribute of the current object
+Input: None
+Output: list
+...
+
+...
+Function name: multiply_weight
+Description: used by classify, performs matrix multiplcation b/w the current
+objects weights, and the input that is being received from the prev layer,
+directly the current object's product attibute
+Input: list 
+Output: None
+...
+
+...
+Function name: add_bias 
+Description: adds the product of the input and the weight to the current object's bias,
+with this new value being the up attibute of the current Layer object
+Input: list 
+Output: None
+...
+
+...
+Function name: sigmoid_activate 
+Description: performs the sigmoid function on the inputed list (up), thereby activating it,
+with this activated array being the object's output, which is directly updated, and
+then returned
+Input: list
+Output: list
+...
+
+...
+Function name: relu_activate
+Description: performs the relu function on the inputed list (up), thereby activating it,
+with this activated array being the object's output, which is directly updated, and
+then returned
+Input: list
+Output: list
+...
+
+...
+Function name: set_error
+Description: sets the object's error attibute equal to the inputted list
+Input: list
+Output: None 
+...
+
+...
+Function name: set_error_delta 
+Description: sets the object's error_delta attibute equal to the inputted list
+Input: list
+Output: None 
+...
+
+...
+Function name: sigmoid_derivative
+Description: due to my implmentation, simply returns returns the inputted int times
+the complement of itself (1 minus itself) 
+Input: int
+Output: int
+...
+
+...
+Function name: relu_derivate 
+Description: returns 0 if the inputed value is 0, else retuns 1
+Input: int
+Output: int 
+...
+
+...
+Function name: set_adj_amount
+Description: using matrix math, via the help of 4 for loops, multiples the current
+layer's error delta by the input of the attribute of the object, which in turn
+creates a 9 by 9 matrix which is used in adjust_weights, with this matrix
+being the adj_amount attribute of the current object
+Input: None 
+Output: None 
+...
+
+...
+Function name: adjust_weights 
+Description: subtracts the adj_amount matrix from the "matrix" matrix using
+matrix math 
+Input: None
+Output: None
+...
+
+...
+Function name: adjust_bias
+Description: subtracts the object's error_delta from the current bias, and then
+updates the bias
+Input: None
+Output: None
+...
